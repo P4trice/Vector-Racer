@@ -1,0 +1,9 @@
+# Ignore all .class files
+*.class
+*.xml
+
+# Ignore paths
+/.gradle/
+/.idea/
+/build/
+/out/

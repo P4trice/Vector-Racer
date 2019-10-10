@@ -1,0 +1,8 @@
+DINGELDONG                                                  1
+testName                                                    0
+DINGELDONG_NameStealer                                      0
+DINGELDONG_NameStealer_NameStealer                          0
+daaaagh                                                     0
+DINGELDONG_NameStealer_NameStealer_NameStealer              0
+Nakarin                                                     1
+Nakarin_NameStealer                                         0

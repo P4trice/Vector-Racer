@@ -1,0 +1,66 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.7'
+}
+
+group 'example.com'
+version ''
+mainClassName = 'shared.Launcher'
+
+sourceCompatibility = 8
+
+apply plugin: 'checkstyle'
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+javafx {
+    modules = ['javafx.controls', 'javafx.media']
+}
+
+
+dependencies {
+    testImplementation group: 'junit', name: 'junit', version: '4.+'
+    implementation group: 'junit', name: 'junit', version: '4.+'
+    compile group: 'joda-time', name: 'joda-time', version: '2.10.1'
+    compile group: 'com.opencsv', name: 'opencsv', version: '4.1'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.11.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.11.2'
+    testCompile "org.mockito:mockito-core:1.+"
+}
+
+task (createJar, type: Jar) {
+
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Jar File Example',
+                'Main-Class': 'shared.Launcher'
+    }
+    baseName = project.name
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+task("build-cs108", type: GradleBuild) {
+    tasks = ['clean', 'createJar', 'javadoc']
+}
+
+
+/*
+The following block adds both compile and runtime dependencies to the jar
+ */
+jar {
+
+    into 'libs', {
+        from 'resources'
+    }
+
+    from {
+        configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    manifest {
+	attributes 'Main-Class': mainClassName
+    }
+}

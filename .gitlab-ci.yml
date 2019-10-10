@@ -1,0 +1,32 @@
+image: openjdk:11-jre-slim
+
+cache:
+  key: "$CI_BUILD_REF_NAME"
+  paths:
+    - .gradle/wrapper
+    - .gradle/caches
+
+stages:
+  - build
+  - execute
+
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+  - chmod +x ./gradlew
+
+build:
+  stage: build
+  script:
+    - ./gradlew build
+  artifacts:
+    paths:
+      - build/libs/*.jar
+      - build/test-results/test/*.xml
+
+execute:
+  stage: execute
+  script:
+  - ./gradlew test
+  artifacts:
+    reports:
+      junit: build/test-results/test/TEST-*.xml
